@@ -1,0 +1,53 @@
+/* login.css */
+
+.root {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-pref-width: 400; /* Ancho mínimo */
+    -fx-pref-height: 600; /* Alto mínimo */
+    -fx-background-color: #181a21; /* Fondo oscuro */
+}
+
+.text-field, .password-field {
+    -fx-padding: 10px;
+    -fx-border-color: #888;
+    -fx-border-radius: 5px;
+    -fx-background-color: #333333; /* Fondo oscuro para los campos */
+    -fx-font-size: 14px;
+    -fx-text-fill: white; /* Color del texto blanco */
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #F0B90B; /* Amarillo de Binance al enfocar */
+}
+
+.check-box {
+    -fx-font-size: 14px;
+    -fx-text-fill: white; /* Color blanco para el texto */
+}
+
+.button {
+    -fx-font-size: 16px;
+    -fx-background-color: #fad336; /* Amarillo de Binance */
+    -fx-text-fill: black; /* Texto negro */
+    -fx-padding: 10px;
+    -fx-border-radius: 15px; /* Borde más redondeado */
+}
+
+.button:hover {
+    -fx-background-color: #D08908; /* Amarillo más oscuro al pasar el ratón */
+}
+
+.button:pressed {
+    -fx-background-color: #9C6C06; /* Amarillo aún más oscuro al hacer clic */
+}
+
+/* login.css */
+
+.label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eae1; /* Color amarillo Binance */
+    -fx-font-family: 'Arial'; /* Fuente similar */
+}
+

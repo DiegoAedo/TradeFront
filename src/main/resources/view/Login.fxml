@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="front.trade.controller.LoginController">
+
+    <!-- Título de la ventana, con estilo mejorado -->
+    <Label text="Iniciar sesión" layoutX="125" layoutY="50"
+           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #e8eaee; -fx-font-family: 'Arial';"
+           alignment="CENTER"/>
+
+    <!-- Campos de texto para usuario y contraseña -->
+    <TextField fx:id="usernameField" layoutX="100" layoutY="150" promptText="Usuario" prefWidth="200"/>
+    <PasswordField fx:id="passwordField" layoutX="100" layoutY="200" promptText="Contraseña" prefWidth="200"/>
+
+    <!-- CheckBox para recordar usuario -->
+    <CheckBox text="Recordar usuario" layoutX="100" layoutY="250"/>
+
+    <!-- Botón de ingreso con clase de estilo -->
+    <Button fx:id="loginButton" text="Ingresar" layoutX="100" layoutY="300" prefWidth="200" styleClass="button"/>
+</AnchorPane>
