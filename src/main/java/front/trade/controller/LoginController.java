@@ -12,6 +12,8 @@ import cl.vc.module.protocolbuff.session.SessionsMessage;
 public class LoginController {
 
     @FXML
+    private Label titleLabel;
+    @FXML
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;

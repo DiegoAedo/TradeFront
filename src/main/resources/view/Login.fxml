@@ -10,24 +10,11 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="front.trade.controller.LoginController">
 
-    <!-- Título de la ventana, con estilo mejorado -->
-    <Label text="Iniciar sesión" layoutX="125" layoutY="50"
-           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #e8eaee; -fx-font-family: 'Arial';"
-           alignment="CENTER"/>
-
-    <!-- Campos de texto para usuario y contraseña -->
+    <Label fx:id="titleLabel" text="Iniciar sesión" layoutX="125" layoutY="50" styleClass="title-label"/>
     <TextField fx:id="usernameField" layoutX="100" layoutY="150" promptText="Usuario" prefWidth="200"/>
     <PasswordField fx:id="passwordField" layoutX="100" layoutY="200" promptText="Contraseña" prefWidth="200"/>
-
-    <!-- CheckBox para recordar usuario -->
     <CheckBox fx:id="chkGuardarContrasena" text="Recordar usuario" layoutX="100" layoutY="250"/>
-
-    <!-- ComboBox para seleccionar ambiente -->
     <ComboBox fx:id="enviromentComboBox" layoutX="100" layoutY="300" prefWidth="200"/>
-
-    <!-- Botón de ingreso con clase de estilo -->
     <Button fx:id="loginButton" text="Ingresar" layoutX="100" layoutY="350" prefWidth="200" styleClass="button"/>
-
-    <!-- Label para mostrar mensaje de error con estilo desde CSS -->
     <Label fx:id="errorLabel" layoutX="100" layoutY="400" text="" styleClass="error-label"/>
 </AnchorPane>

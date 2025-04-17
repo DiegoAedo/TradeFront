@@ -59,3 +59,11 @@
     -fx-wrap-text: true; /* Permite que el texto se ajuste al área */
     -fx-text-alignment: center; /* Centra el texto */
 }
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaee; /* Color amarillo claro */
+    -fx-font-family: 'Arial'; /* Fuente similar */
+    -fx-text-alignment: center; /* Centrado del texto */
+}
