@@ -1,5 +1,6 @@
 package front.trade;
 
+import front.trade.controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +20,8 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        Repository.getProperties().load(LoginController.class.getResourceAsStream("/enviroment/application.properties"));
 
         // Cargar el archivo FXML
         URL fxmlURL = getClass().getResource("/view/login.fxml");
