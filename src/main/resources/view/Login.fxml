@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="front.trade.controller.LoginController">
@@ -19,8 +20,14 @@
     <PasswordField fx:id="passwordField" layoutX="100" layoutY="200" promptText="Contraseña" prefWidth="200"/>
 
     <!-- CheckBox para recordar usuario -->
-    <CheckBox text="Recordar usuario" layoutX="100" layoutY="250"/>
+    <CheckBox fx:id="chkGuardarContrasena" text="Recordar usuario" layoutX="100" layoutY="250"/>
+
+    <!-- ComboBox para seleccionar ambiente -->
+    <ComboBox fx:id="enviromentComboBox" layoutX="100" layoutY="300" prefWidth="200"/>
 
     <!-- Botón de ingreso con clase de estilo -->
-    <Button fx:id="loginButton" text="Ingresar" layoutX="100" layoutY="300" prefWidth="200" styleClass="button"/>
+    <Button fx:id="loginButton" text="Ingresar" layoutX="100" layoutY="350" prefWidth="200" styleClass="button"/>
+
+    <!-- Label para mostrar mensaje de error con estilo desde CSS -->
+    <Label fx:id="errorLabel" layoutX="100" layoutY="400" text="" styleClass="error-label"/>
 </AnchorPane>

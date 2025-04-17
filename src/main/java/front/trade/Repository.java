@@ -32,7 +32,14 @@ public class Repository {
     @Getter
     @Setter
     public static String credencialPath;
-
+    @Getter
+    public static Scene login;
+    @Getter
+    @Setter
+    private static LoginController loginController;
+    @Setter
+    @Getter
+    public static SessionsMessage.Enviroment enviroment;
     @Getter
     private static Properties properties = new Properties();
     @Getter

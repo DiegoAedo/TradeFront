@@ -1,5 +1,6 @@
 /* login.css */
 
+/* Estilos generales */
 .root {
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
@@ -42,8 +43,7 @@
     -fx-background-color: #9C6C06; /* Amarillo aún más oscuro al hacer clic */
 }
 
-/* login.css */
-
+/* Estilo para los mensajes de error */
 .label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
@@ -51,3 +51,11 @@
     -fx-font-family: 'Arial'; /* Fuente similar */
 }
 
+/* Estilo del mensaje de error */
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 12px; /* Tamaño del texto más apropiado */
+    -fx-pref-width: 200px; /* Ajusta el ancho al del botón */
+    -fx-wrap-text: true; /* Permite que el texto se ajuste al área */
+    -fx-text-alignment: center; /* Centra el texto */
+}
