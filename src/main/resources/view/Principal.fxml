@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="front.trade.controller.PrincipalController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- Aquí agregamos el Label para mostrar el mensaje -->
+    <Label fx:id="welcomeLabel" text="Hola" layoutX="250" layoutY="180" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #e8eaee;" />
+
+</AnchorPane>
+

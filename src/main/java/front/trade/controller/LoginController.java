@@ -1,14 +1,34 @@
 package front.trade.controller;
 
+import cl.vc.module.protocolbuff.crypt.AESEncryption;
+import cl.vc.module.protocolbuff.notification.NotificationMessage;
+import front.trade.ws.SimpleWebSocketListener;
+import front.trade.utils.EncryptionUtil;
 import front.trade.Repository;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import cl.vc.module.protocolbuff.session.SessionsMessage;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.eclipse.jetty.websocket.common.extensions.compress.PerMessageDeflateExtension;
 
+import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.concurrent.TimeUnit;
+
+@Slf4j
+@Data
 public class LoginController {
 
     @FXML
@@ -25,6 +45,8 @@ public class LoginController {
     private ComboBox<SessionsMessage.Enviroment> enviromentComboBox;
     @FXML
     private Label errorLabel;  // Etiqueta de error para mostrar el mensaje
+
+    public static SimpleWebSocketListener simpleWebSocketListener;
 
     @FXML
     public void initialize() {
@@ -190,7 +212,85 @@ public class LoginController {
         } else {
             // Realiza la lógica de conexión con el ambiente seleccionado
             SessionsMessage.Enviroment selectedEnv = enviromentComboBox.getValue();
-            // Aquí podrías agregar la lógica para conectarte al ambiente seleccionado
+
+            // Llamar al método que realiza la validación de las credenciales
+            performLogin(username, password, selectedEnv);
+        }
+    }
+
+    // Método para realizar el login con WebSocket
+    private void performLogin(String username, String password, SessionsMessage.Enviroment selectedEnv) {
+        try {
+            // Asegúrate de que el entorno esté configurado antes de usarlo
+            SessionsMessage.Enviroment env = Repository.getEnviroment();
+            if (env == null) {
+                // Si el entorno es null, mostrar un mensaje de error y salir
+                log.error("El entorno no ha sido configurado correctamente.");
+                showErrorMessage("Error: el entorno no ha sido configurado.");
+                return;  // Salir de la función si no hay entorno
+            }
+
+            // Recuperar la URL del WebSocket a partir del entorno configurado
+            String enviromentUrl = Repository.getProperties().getProperty(env.name().toLowerCase());
+            if (enviromentUrl == null || enviromentUrl.isEmpty()) {
+                // Si la URL del entorno está vacía o es null, mostrar un error
+                showErrorMessage("Error: la URL del entorno no está configurada.");
+                return;
+            }
+
+            // Conectar con el WebSocket
+            String credentials = AESEncryption.encrypt(username) + ":" + AESEncryption.encrypt(password);
+            String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
+
+            WebSocketClient client = new WebSocketClient();
+            client.getPolicy().setMaxTextMessageSize(100 * 1024 * 1024);
+            client.getPolicy().setMaxBinaryMessageSize(100 * 1024 * 1024);
+            client.getPolicy().setIdleTimeout(300000);
+
+            client.addBean(new PerMessageDeflateExtension());
+            client.start();
+            Repository.setCredencial(credentials);
+
+            ClientUpgradeRequest request = new ClientUpgradeRequest();
+            request.setHeader("Authorization", "Basic " + encodedCredentials);
+            request.addExtensions("permessage-deflate");
+
+            // Crear el listener de WebSocket
+            simpleWebSocketListener = new SimpleWebSocketListener(client, Repository.clientActor, Repository.getActorSystem(),
+                    NotificationMessage.Component.BLOTTER_FRONT, Repository.username, enviromentUrl, request);
+
+            // Conectar al WebSocket usando la URL del entorno
+            client.connect(simpleWebSocketListener, new URI(enviromentUrl), request).get(5, TimeUnit.SECONDS);
+
+            // Verificar si la conexión fue exitosa
+            if (simpleWebSocketListener.isConnected()) {
+                Repository.setClientService(simpleWebSocketListener);
+            } else {
+                simpleWebSocketListener.setCloseFailure(true);
+            }
+
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            showErrorMessage("Error en la conexión: " + ex.getMessage());
+        }
+    }
+
+    // Método para cambiar a la siguiente pantalla
+    private void navigateToNextScreen() {
+        try {
+            // Cargar la siguiente pantalla
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
+            AnchorPane mainScreen = loader.load();
+
+            // Cargar la escena en el Stage
+            Scene mainScene = new Scene(mainScreen);
+            Repository.getPrincipal().setScene(mainScene);
+            Repository.getPrincipal().setTitle("Aplicación Principal");
+            Repository.getPrincipal().show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorMessage("Error al cargar la siguiente pantalla.");
         }
     }
 }

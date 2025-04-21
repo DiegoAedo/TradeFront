@@ -31,6 +31,13 @@ public class Repository {
 
     @Getter
     @Setter
+    public static String credencial;
+    @Getter
+    public static ActorRef clientActor;
+    @Getter
+    public static ActorSystem actorSystem = ActorSystem.create();
+    @Getter
+    @Setter
     public static String credencialPath;
     @Getter
     public static Scene login;
@@ -68,8 +75,30 @@ public class Repository {
     @Setter
     private static boolean notification = true;
 
+    static {
+        // Aseguramos que el entorno sea cargado correctamente al iniciar la aplicación
+        // Aseguramos que el entorno sea cargado correctamente al iniciar la aplicación
+        try {
+            // Cargar propiedades desde el archivo de configuración
+            properties.load(Repository.class.getResourceAsStream("/enviroment/application.properties"));
 
-    public static void enviasubscripcionAll() {
+            // Obtener el entorno configurado en el archivo de propiedades
+            String environmentProperty = properties.getProperty("environment");  // 'environment' debe existir en el archivo
+            if (environmentProperty != null) {
+                // Establecer el entorno en el Repository
+                enviroment = SessionsMessage.Enviroment.valueOf(environmentProperty.toUpperCase());
+                log.info("El entorno se ha configurado como: " + enviroment.name());
+            } else {
+                log.error("El entorno no se ha configurado correctamente en el archivo de propiedades.");
+            }
+        } catch (Exception e) {
+            log.error("Error al cargar las propiedades del entorno", e);
+        }
+
+    }
+
+
+        public static void enviasubscripcionAll() {
         Repository.getSubscribeIdStatistic().entrySet().forEach(s -> {
             Repository.getClientService().sendMessage(s.getValue());
         });
@@ -96,4 +125,20 @@ public class Repository {
         Repository.getClientService().sendMessage(subscribe);
         log.info("envia subscripcion dolar connect");
     }
+
+    // Método para obtener la URL del entorno configurado
+    public static String getEnvironmentUrl() {
+        if (enviroment == null) {
+            log.error("El entorno no ha sido configurado correctamente.");
+            return null;
+        }
+
+        // Usamos el nombre del entorno para obtener la URL correspondiente del archivo de propiedades
+        String enviromentUrl = properties.getProperty(enviroment.name().toLowerCase());  // "production", "test", "localhost", etc.
+        if (enviromentUrl == null) {
+            log.error("No se ha configurado una URL para el entorno: " + enviroment.name());
+        }
+        return enviromentUrl;
+    }
+
 }

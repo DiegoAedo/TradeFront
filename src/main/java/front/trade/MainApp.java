@@ -38,6 +38,8 @@ public class MainApp extends Application {
             // Cargar propiedades desde el archivo de configuración
             Repository.getProperties().load(LoginController.class.getResourceAsStream("/enviroment/application.properties"));
 
+            Repository.getProperties().forEach((key, value) -> log.debug("Propiedad cargada: {} = {}", key, value));
+
             // Cargar el archivo FXML de Login
             URL fxmlURL = getClass().getResource("/view/login.fxml");
             if (fxmlURL == null) {
